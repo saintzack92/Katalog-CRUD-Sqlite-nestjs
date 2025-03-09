@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
-// import { TypeormStore } from 'connect-typeorm'; // Uncomment if you are using TypeORM store for sessions
 import { DataSource } from 'typeorm';
 import { TypeormStore } from 'connect-typeorm';
 import { SessionEntity } from './typeorm/Session';
@@ -16,7 +15,7 @@ async function bootstrap() {
   const dataSource = app.get<DataSource>(DataSource);
   const sessionRepository = dataSource.getRepository(SessionEntity);
   app.enableCors({
-    origin: 'http://localhost:3001', // URL of your Next.js app
+    origin: 'http://localhost:3001', 
     methods: 'GET,PUT,POST,DELETE, PATCH',
     allowedHeaders: 'Content-Type, Accept,Authorization',
     credentials: true,
@@ -24,7 +23,7 @@ async function bootstrap() {
   console.log('Database path:', join(__dirname, 'database.sqlite'));
   app.use(session({
     name: 'nestjssession',
-    secret: 'yourSuperSecretSessionKey',
+    secret: 'SuperSecretSessionKey',
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -42,7 +41,6 @@ async function bootstrap() {
   app.use(passport.session());
   app.use(cookieParser());
 
-  // Increase server timeout
   const server = app.getHttpServer();
   server.setTimeout(10 * 60 * 100); 
 
